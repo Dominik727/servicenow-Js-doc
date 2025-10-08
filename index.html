@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceNow JSDoc Documentation Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #00a1e0;
+            --secondary-color: #1c1f2a;
+            --accent-color: #ff6b6b;
+            --bg-dark: #0d1117;
+            --bg-light: #161b22;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --border-color: #30363d;
+            --code-bg: #1c2128;
+            --success-color: #3fb950;
+            --warning-color: #f0883e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--secondary-color) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00a1e0 0%, #0066cc 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 161, 224, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        .nav {
+            background: var(--bg-light);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .nav a:hover {
+            color: var(--primary-color);
+            background: var(--code-bg);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 161, 224, 0.2);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section h2::before {
+            content: '▸';
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .section h3 {
+            color: var(--success-color);
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .section h4 {
+            color: var(--warning-color);
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        pre {
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .inline-code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-color);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 161, 224, 0.1) 0%, rgba(0, 102, 204, 0.1) 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .info-box.warning {
+            background: linear-gradient(135deg, rgba(240, 136, 62, 0.1) 0%, rgba(240, 100, 62, 0.1) 100%);
+            border-left-color: var(--warning-color);
+        }
+
+        .info-box.success {
+            background: linear-gradient(135deg, rgba(63, 185, 80, 0.1) 0%, rgba(40, 167, 69, 0.1) 100%);
+            border-left-color: var(--success-color);
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .tag-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tag-item {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .tag-item:hover {
+            border-color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        .tag-item strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-showcase {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .footer {
+            background: var(--secondary-color);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--success-color);
+            text-decoration: underline;
+        }
+
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(0, 161, 224, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+
+            .tag-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 161, 224, 0.5);
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 161, 224, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 ServiceNow JSDoc Documentation Guide</h1>
+        <p>Master the Art of Professional Code Documentation in ServiceNow</p>
+    </div>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#basics">Basics</a></li>
+            <li><a href="#tags">JSDoc Tags</a></li>
+            <li><a href="#servicenow">ServiceNow Specifics</a></li>
+            <li><a href="#advanced">Advanced Examples</a></li>
+            <li><a href="#best-practices">Best Practices</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="introduction" class="section">
+            <h2>Introduction to JSDoc in ServiceNow</h2>
+            <p>JSDoc is a powerful documentation system for JavaScript that allows you to annotate your code with structured comments. In ServiceNow, proper documentation is crucial for maintaining enterprise-scale applications, enabling team collaboration, and ensuring code maintainability.</p>
+            
+            <div class="info-box">
+                <strong>💡 Why Use JSDoc in ServiceNow?</strong>
+                <ul>
+                    <li>Improve code readability and maintainability</li>
+                    <li>Enable better IDE autocomplete and IntelliSense</li>
+                    <li>Generate automatic documentation</li>
+                    <li>Facilitate team collaboration</li>
+                    <li>Document complex ServiceNow APIs and workflows</li>
+                </ul>
+            </div>
+
+            <p>JSDoc comments begin with <span class="inline-code">/**</span> and end with <span class="inline-code">*/</span>. Each line typically starts with an asterisk <span class="inline-code">*</span> for consistency.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * This is a JSDoc comment
+ * It can span multiple lines
+ */</code></pre>
+            </div>
+        </section>
+
+        <section id="basics" class="section">
+            <h2>JSDoc Basics</h2>
+            
+            <h3>Basic Function Documentation</h3>
+            <p>Every function should be documented with a description, parameters, and return value.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * Calculates the total price including tax
+ * @param {number} basePrice - The base price before tax
+ * @param {number} taxRate - The tax rate as a decimal (e.g., 0.08 for 8%)
+ * @returns {number} The total price including tax
+ * @example
+ * const total = calculateTotal(100, 0.08);
+ * // Returns: 108
+ */
+function calculateTotal(basePrice, taxRate) {
+    return basePrice * (1 + taxRate);
+}</code></pre>
+            </div>
+
+            <h3>Class Documentation</h3>
+            <p>Classes should document their purpose, constructor parameters, and public methods.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * Represents a ServiceNow Incident Manager
+ * @class
+ * @classdesc Manages incident creation, updates, and resolution workflows
+ */
+var IncidentManager = Class.create();
+IncidentManager.prototype = {
+    /**
+     * Initializes the Incident Manager
+     * @constructor
+     * @param {GlideRecord} incidentRecord - The incident record to manage
+     */
+    initialize: function(incidentRecord) {
+        this.incident = incidentRecord;
+        this.logger = new GSLog('IncidentManager', 'global');
+    },
+
+    /**
+     * Assigns the incident to a user or group
+     * @param {string} assignee - sys_id of the user or group
+     * @param {string} type - Either 'user' or 'group'
+     * @returns {boolean} True if assignment was successful
+     * @throws {Error} If assignee type is invalid
+     */
+    assignIncident: function(assignee, type) {
+        if (type !== 'user' && type !== 'group') {
+            throw new Error('Invalid assignee type: ' + type);
+        }
+
+        if (type === 'user') {
+            this.incident.assigned_to = assignee;
+        } else {
+            this.incident.assignment_group = assignee;
+        }
+
+        return this.incident.update();
+    },
+
+    type: 'IncidentManager'
+};</code></pre>
+            </div>
+        </section>
+
+        <section id="tags" class="section">
+            <h2>Essential JSDoc Tags</h2>
+            
+            <p>JSDoc provides numerous tags to describe different aspects of your code. Here are the most important ones for ServiceNow development:</p>
+
+            <div class="tag-list">
+                <div class="tag-item">
+                    <strong>@param</strong>
+                    <p>Documents function parameters with type, name, and description</p>
+                    <code>@param {string} name - User's name</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@returns / @return</strong>
+                    <p>Documents the return value and its type</p>
+                    <code>@returns {boolean} Success status</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@description / @desc</strong>
+                    <p>Provides a detailed description</p>
+                    <code>@description Processes the incident workflow</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@example</strong>
+                    <p>Shows usage examples</p>
+                    <code>@example<br>const result = myFunc();</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@throws</strong>
+                    <p>Documents exceptions that may be thrown</p>
+                    <code>@throws {Error} If validation fails</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@see</strong>
+                    <p>References related documentation or code</p>
+                    <code>@see {@link OtherClass}</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@author</strong>
+                    <p>Identifies the code author</p>
+                    <code>@author John Doe &lt;john@example.com&gt;</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@since</strong>
+                    <p>Documents when the feature was added</p>
+                    <code>@since Version 2.0</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@deprecated</strong>
+                    <p>Marks code as deprecated</p>
+                    <code>@deprecated Use newMethod() instead</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@private</strong>
+                    <p>Marks methods as private</p>
+                    <code>@private</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@typedef</strong>
+                    <p>Defines custom types</p>
+                    <code>@typedef {Object} Config</code>
+                </div>
+
+                <div class="tag-item">
+                    <strong>@callback</strong>
+                    <p>Documents callback functions</p>
+                    <code>@callback RequestCallback</code>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicenow" class="section">
+            <h2>ServiceNow-Specific Documentation</h2>
+
+            <h3>Business Rules</h3>
+            <p>Business Rules should document their trigger conditions and expected behavior.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * Business Rule: Auto-assign Incidents
+ * 
+ * @description Automatically assigns incidents to the appropriate group based on category
+ * @trigger Before Insert
+ * @table incident
+ * @conditions Category is not empty
+ * @author ServiceNow Admin
+ * @since 2024.01
+ */
+(function executeRule(current, previous /*null when async*/) {
+    /**
+     * Gets the assignment group based on incident category
+     * @param {string} category - The incident category
+     * @returns {string} sys_id of the assignment group
+     */
+    function getAssignmentGroup(category) {
+        var gr = new GlideRecord('sys_user_group');
+        gr.addQuery('name', 'CONTAINS', category);
+        gr.query();
+        
+        if (gr.next()) {
+            return gr.sys_id.toString();
+        }
+        
+        return '';
+    }
+
+    // Only process if category is set
+    if (!current.category.nil()) {
+        var groupId = getAssignmentGroup(current.category.toString());
+        
+        if (groupId) {
+            current.assignment_group = groupId;
+            gs.info('Auto-assigned incident ' + current.number + ' to group: ' + groupId);
+        }
+    }
+})(current, previous);</code></pre>
+            </div>
+
+            <h3>Script Include</h3>
+            <p>Script Includes should thoroughly document their API and usage.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * ServiceNow Utility Library for Incident Management
+ * 
+ * @class IncidentUtils
+ * @classdesc Provides utility functions for incident management operations
+ * @description This Script Include contains helper methods for common incident operations
+ *              including priority calculation, SLA management, and notification handling
+ * 
+ * @author ServiceNow Team
+ * @since Rome Release
+ * @version 2.1.0
+ * 
+ * @example
+ * var utils = new IncidentUtils();
+ * var priority = utils.calculatePriority(3, 2);
+ */
+var IncidentUtils = Class.create();
+IncidentUtils.prototype = {
+    /**
+     * Initializes the IncidentUtils class
+     * @constructor
+     */
+    initialize: function() {
+        this.PRIORITY_MATRIX = {
+            '1-1': 1, '1-2': 1, '1-3': 2,
+            '2-1': 1, '2-2': 2, '2-3': 3,
+            '3-1': 2, '3-2': 3, '3-3': 4
+        };
+    },
+
+    /**
+     * Calculates incident priority based on urgency and impact
+     * 
+     * @param {number} urgency - Urgency level (1-3, where 1 is highest)
+     * @param {number} impact - Impact level (1-3, where 1 is highest)
+     * @returns {number} Calculated priority (1-4)
+     * 
+     * @throws {TypeError} If urgency or impact are not numbers
+     * @throws {RangeError} If urgency or impact are outside 1-3 range
+     * 
+     * @example
+     * var priority = utils.calculatePriority(1, 2);
+     * // Returns: 1 (Critical)
+     * 
+     * @example
+     * var priority = utils.calculatePriority(3, 3);
+     * // Returns: 4 (Low)
+     */
+    calculatePriority: function(urgency, impact) {
+        // Validate inputs
+        if (typeof urgency !== 'number' || typeof impact !== 'number') {
+            throw new TypeError('Urgency and impact must be numbers');
+        }
+
+        if (urgency < 1 || urgency > 3 || impact < 1 || impact > 3) {
+            throw new RangeError('Urgency and impact must be between 1 and 3');
+        }
+
+        var key = urgency + '-' + impact;
+        return this.PRIORITY_MATRIX[key] || 4;
+    },
+
+    /**
+     * Sends notification to incident stakeholders
+     * 
+     * @param {string} incidentSysId - sys_id of the incident record
+     * @param {string} notificationType - Type of notification to send
+     * @param {Object} [additionalData={}] - Additional data for notification template
+     * @param {string} additionalData.customMessage - Custom message to include
+     * @param {Array<string>} additionalData.recipients - Additional recipient sys_ids
+     * 
+     * @returns {boolean} True if notification was sent successfully
+     * 
+     * @example
+     * var success = utils.sendNotification(
+     *     'abc123',
+     *     'incident.assigned',
+     *     {
+     *         customMessage: 'Please review urgently',
+     *         recipients: ['user1_sys_id', 'user2_sys_id']
+     *     }
+     * );
+     */
+    sendNotification: function(incidentSysId, notificationType, additionalData) {
+        additionalData = additionalData || {};
+        
+        var gr = new GlideRecord('incident');
+        if (!gr.get(incidentSysId)) {
+            gs.error('Incident not found: ' + incidentSysId);
+            return false;
+        }
+
+        try {
+            gs.eventQueue(notificationType, gr, additionalData.customMessage, additionalData.recipients);
+            return true;
+        } catch (e) {
+            gs.error('Failed to send notification: ' + e.message);
+            return false;
+        }
+    },
+
+    /**
+     * Retrieves incident statistics for a given date range
+     * 
+     * @param {string} startDate - Start date in format 'YYYY-MM-DD'
+     * @param {string} endDate - End date in format 'YYYY-MM-DD'
+     * @param {Object} [filters={}] - Optional filters
+     * @param {string} filters.category - Filter by category
+     * @param {string} filters.state - Filter by state
+     * @param {string} filters.assignmentGroup - Filter by assignment group sys_id
+     * 
+     * @returns {IncidentStats} Object containing incident statistics
+     * 
+     * @typedef {Object} IncidentStats
+     * @property {number} total - Total number of incidents
+     * @property {number} open - Number of open incidents
+     * @property {number} resolved - Number of resolved incidents
+     * @property {number} avgResolutionTime - Average resolution time in hours
+     * @property {Object} byPriority - Breakdown by priority level
+     * 
+     * @example
+     * var stats = utils.getIncidentStats('2024-01-01', '2024-01-31', {
+     *     category: 'Network',
+     *     state: '1'
+     * });
+     * gs.info('Total incidents: ' + stats.total);
+     */
+    getIncidentStats: function(startDate, endDate, filters) {
+        filters = filters || {};
+        
+        var gr = new GlideRecord('incident');
+        gr.addQuery('opened_at', '>=', startDate);
+        gr.addQuery('opened_at', '<=', endDate);
+        
+        if (filters.category) {
+            gr.addQuery('category', filters.category);
+        }
+        if (filters.state) {
+            gr.addQuery('state', filters.state);
+        }
+        if (filters.assignmentGroup) {
+            gr.addQuery('assignment_group', filters.assignmentGroup);
+        }
+        
+        gr.query();
+        
+        var stats = {
+            total: gr.getRowCount(),
+            open: 0,
+            resolved: 0,
+            avgResolutionTime: 0,
+            byPriority: { '1': 0, '2': 0, '3': 0, '4': 0 }
+        };
+        
+        var totalResolutionTime = 0;
+        var resolvedCount = 0;
+        
+        while (gr.next()) {
+            // Count by state
+            var state = gr.state.toString();
+            if (state === '6' || state === '7') {
+                stats.resolved++;
+                
+                // Calculate resolution time
+                var opened = new GlideDateTime(gr.opened_at);
+                var resolved = new GlideDateTime(gr.resolved_at);
+                var diff = GlideDateTime.subtract(opened, resolved);
+                totalResolutionTime += diff.getNumericValue();
+                resolvedCount++;
+            } else {
+                stats.open++;
+            }
+            
+            // Count by priority
+            var priority = gr.priority.toString();
+            if (stats.byPriority[priority] !== undefined) {
+                stats.byPriority[priority]++;
+            }
+        }
+        
+        if (resolvedCount > 0) {
+            stats.avgResolutionTime = Math.round(totalResolutionTime / resolvedCount / 3600000);
+        }
+        
+        return stats;
+    },
+
+    /**
+     * @private
+     * @description Internal helper method - do not use directly
+     */
+    _validateRecord: function(record) {
+        return record && record.isValidRecord();
+    },
+
+    type: 'IncidentUtils'
+};</code></pre>
+            </div>
+
+            <h3>Client Script</h3>
+            <p>Client Scripts should document their type and form interactions.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * Client Script: Validate Incident Priority
+ * 
+ * @description Validates incident priority against urgency and impact on form submission
+ * @type onChange
+ * @table incident
+ * @field urgency, impact
+ * 
+ * @param {Object} control - The form control that triggered the event
+ * @param {Object} oldValue - Previous field value
+ * @param {Object} newValue - New field value
+ * @param {boolean} isLoading - True if form is loading
+ * @param {boolean} isTemplate - True if this is a template
+ */
+function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+    if (isLoading || isTemplate) {
+        return;
+    }
+
+    /**
+     * Calculates the correct priority based on urgency and impact
+     * @param {string} urgency - Urgency value
+     * @param {string} impact - Impact value
+     * @returns {string} Calculated priority value
+     */
+    function calculatePriority(urgency, impact) {
+        var priorityMatrix = {
+            '1-1': '1', '1-2': '1', '1-3': '2',
+            '2-1': '1', '2-2': '2', '2-3': '3',
+            '3-1': '2', '3-2': '3', '3-3': '4'
+        };
+        
+        var key = urgency + '-' + impact;
+        return priorityMatrix[key] || '4';
+    }
+
+    var urgency = g_form.getValue('urgency');
+    var impact = g_form.getValue('impact');
+    
+    if (urgency && impact) {
+        var calculatedPriority = calculatePriority(urgency, impact);
+        g_form.setValue('priority', calculatedPriority);
+    }
+}</code></pre>
+            </div>
+
+            <h3>UI Action</h3>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * UI Action: Escalate Incident
+ * 
+ * @description Escalates an incident to the next priority level and notifies management
+ * @condition current.state != '6' && current.state != '7'
+ * @action Button
+ * @table incident
+ * 
+ * @returns {void}
+ */
+(function() {
+    /**
+     * Escalates the current incident
+     * @param {GlideRecord} incident - The incident to escalate
+     * @returns {boolean} Success status
+     */
+    function escalateIncident(incident) {
+        var currentPriority = parseInt(incident.priority.toString());
+        
+        if (currentPriority <= 1) {
+            gs.addErrorMessage('Incident is already at highest priority');
+            return false;
+        }
+        
+        // Decrease priority number (increases urgency)
+        incident.priority = (currentPriority - 1).toString();
+        incident.escalation = 1; // Set escalation flag
+        incident.update();
+        
+        // Send notification to management
+        gs.eventQueue('incident.escalated', incident);
+        
+        gs.addInfoMessage('Incident escalated to Priority ' + incident.priority);
+        return true;
+    }
+    
+    escalateIncident(current);
+    action.setRedirectURL(current);
+})();</code></pre>
+            </div>
+        </section>
+
+        <section id="advanced" class="section">
+            <h2>Advanced JSDoc Patterns</h2>
+
+            <h3>Complex Type Definitions</h3>
+            <p>Use <span class="inline-code">@typedef</span> for defining complex object structures.</p>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * @typedef {Object} IncidentConfiguration
+ * @property {string} category - Incident category
+ * @property {number} priority - Priority level (1-4)
+ * @property {boolean} autoAssign - Enable automatic assignment
+ * @property {AssignmentRules} assignmentRules - Rules for assignment
+ * @property {NotificationConfig} notifications - Notification settings
+ */
+
+/**
+ * @typedef {Object} AssignmentRules
+ * @property {string} defaultGroup - Default assignment group sys_id
+ * @property {boolean} roundRobin - Use round-robin assignment
+ * @property {Array<string>} excludedUsers - Users to exclude from assignment
+ * @property {Object<string, string>} categoryMapping - Category to group mapping
+ */
+
+/**
+ * @typedef {Object} NotificationConfig
+ * @property {boolean} onAssignment - Notify on assignment
+ * @property {boolean} onEscalation - Notify on escalation
+ * @property {Array<string>} additionalRecipients - Additional notification recipients
+ * @property {string} templateSysId - Custom notification template sys_id
+ */
+
+/**
+ * Configures incident management settings
+ * 
+ * @param {IncidentConfiguration} config - Configuration object
+ * @returns {boolean} True if configuration was applied successfully
+ * 
+ * @example
+ * var config = {
+ *     category: 'Hardware',
+ *     priority: 2,
+ *     autoAssign: true,
+ *     assignmentRules: {
+ *         defaultGroup: 'abc123',
+ *         roundRobin: true,
+ *         excludedUsers: ['user1', 'user2'],
+ *         categoryMapping: {
+ *             'Network': 'group1',
+ *             'Software': 'group2'
+ *         }
+ *     },
+ *     notifications: {
+ *         onAssignment: true,
+ *         onEscalation: true,
+ *         additionalRecipients: ['manager1', 'manager2'],
+ *         templateSysId: 'template123'
+ *     }
+ * };
+ * 
+ * configureIncidentManagement(config);
+ */
+function configureIncidentManagement(config) {
+    // Implementation here
+    return true;
+}</code></pre>
+            </div>
+
+            <h3>Generic Types and Templates</h3>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * Generic repository for ServiceNow table operations
+ * 
+ * @template T
+ * @class Repository
+ * @classdesc Provides CRUD operations for any ServiceNow table
+ */
+var Repository = Class.create();
+Repository.prototype = {
+    /**
+     * @constructor
+     * @param {string} tableName - Name of the ServiceNow table
+     */
+    initialize: function(tableName) {
+        this.tableName = tableName;
+    },
+
+    /**
+     * Finds a record by sys_id
+     * 
+     * @template T
+     * @param {string} sysId - Record sys_id
+     * @returns {T|null} The record if found, null otherwise
+     */
+    findById: function(sysId) {
+        var gr = new GlideRecord(this.tableName);
+        if (gr.get(sysId)) {
+            return this._recordToObject(gr);
+        }
+        return null;
+    },
+
+    /**
+     * Finds all records matching criteria
+     * 
+     * @template T
+     * @param {Object<string, any>} criteria - Search criteria
+     * @param {number} [limit=100] - Maximum number of results
+     * @returns {Array<T>} Array of matching records
+     */
+    findAll: function(criteria, limit) {
+        limit = limit || 100;
+        var gr = new GlideRecord(this.tableName);
+        
+        for (var field in criteria) {
+            gr.addQuery(field, criteria[field]);
+        }
+        
+        gr.setLimit(limit);
+        gr.query();
+        
+        var results = [];
+        while (gr.next()) {
+            results.push(this._recordToObject(gr));
+        }
+        
+        return results;
+    },
+
+    /**
+     * @private
+     * @param {GlideRecord} gr - GlideRecord to convert
+     * @returns {Object} Plain object representation
+     */
+    _recordToObject: function(gr) {
+        var obj = {};
+        var fields = gr.getFields();
+        
+        for (var i = 0; i < fields.size(); i++) {
+            var field = fields.get(i);
+            obj[field.getName()] = gr.getValue(field.getName());
+        }
+        
+        return obj;
+    },
+
+    type: 'Repository'
+};</code></pre>
+            </div>
+
+            <h3>Async Operations and Promises</h3>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * @callback AsyncCallback
+ * @param {Error|null} error - Error object if operation failed, null otherwise
+ * @param {*} result - Operation result
+ */
+
+/**
+ * Asynchronously fetches incident data from external system
+ * 
+ * @param {string} incidentNumber - Incident number to fetch
+ * @param {AsyncCallback} callback - Callback function
+ * 
+ * @returns {void}
+ * 
+ * @example
+ * fetchExternalIncident('INC0010001', function(error, data) {
+ *     if (error) {
+ *         gs.error('Failed to fetch incident: ' + error.message);
+ *         return;
+ *     }
+ *     
+ *     gs.info('Fetched incident: ' + JSON.stringify(data));
+ * });
+ */
+function fetchExternalIncident(incidentNumber, callback) {
+    var request = new sn_ws.RESTMessageV2();
+    request.setEndpoint('https://api.example.com/incidents/' + incidentNumber);
+    request.setHttpMethod('GET');
+    
+    request.executeAsync(function(response) {
+        if (response.getStatusCode() === 200) {
+            try {
+                var data = JSON.parse(response.getBody());
+                callback(null, data);
+            } catch (e) {
+                callback(new Error('Failed to parse response: ' + e.message));
+            }
+        } else {
+            callback(new Error('HTTP ' + response.getStatusCode()));
+        }
+    });
+}
+
+/**
+ * Promise-based wrapper for async operations
+ * 
+ * @param {string} incidentNumber - Incident number
+ * @returns {Promise<Object>} Promise resolving to incident data
+ * 
+ * @example
+ * fetchExternalIncidentPromise('INC0010001')
+ *     .then(function(data) {
+ *         gs.info('Success: ' + JSON.stringify(data));
+ *     })
+ *     .catch(function(error) {
+ *         gs.error('Error: ' + error.message);
+ *     });
+ */
+function fetchExternalIncidentPromise(incidentNumber) {
+    return new Promise(function(resolve, reject) {
+        fetchExternalIncident(incidentNumber, function(error, data) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}</code></pre>
+            </div>
+
+            <h3>Decorator Pattern with JSDoc</h3>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * @interface IIncidentHandler
+ */
+
+/**
+ * @function
+ * @name IIncidentHandler#handle
+ * @param {GlideRecord} incident - Incident record
+ * @returns {boolean} Success status
+ */
+
+/**
+ * Base incident handler
+ * @implements {IIncidentHandler}
+ */
+var BaseIncidentHandler = Class.create();
+BaseIncidentHandler.prototype = {
+    initialize: function() {},
+    
+    /**
+     * @param {GlideRecord} incident
+     * @returns {boolean}
+     */
+    handle: function(incident) {
+        return true;
+    },
+    
+    type: 'BaseIncidentHandler'
+};
+
+/**
+ * Logging decorator for incident handlers
+ * @implements {IIncidentHandler}
+ */
+var LoggingIncidentHandler = Class.create();
+LoggingIncidentHandler.prototype = {
+    /**
+     * @param {IIncidentHandler} handler - Handler to decorate
+     */
+    initialize: function(handler) {
+        this.handler = handler;
+        this.logger = new GSLog('IncidentHandler', 'global');
+    },
+    
+    /**
+     * Handles incident with logging
+     * @param {GlideRecord} incident
+     * @returns {boolean}
+     */
+    handle: function(incident) {
+        this.logger.info('Handling incident: ' + incident.number);
+        var startTime = new GlideDateTime();
+        
+        try {
+            var result = this.handler.handle(incident);
+            var duration = GlideDateTime.subtract(startTime, new GlideDateTime());
+            this.logger.info('Completed in ' + duration.getNumericValue() + 'ms');
+            return result;
+        } catch (e) {
+            this.logger.error('Error handling incident: ' + e.message);
+            throw e;
+        }
+    },
+    
+    type: 'LoggingIncidentHandler'
+};</code></pre>
+            </div>
+        </section>
+
+        <section id="best-practices" class="section">
+            <h2>Best Practices for ServiceNow JSDoc</h2>
+
+            <div class="info-box success">
+                <strong>✅ DO: Write Clear and Concise Descriptions</strong>
+                <p>Keep descriptions focused and actionable. Avoid unnecessary verbosity while providing enough context for understanding.</p>
+            </div>
+
+            <div class="info-box success">
+                <strong>✅ DO: Document All Public APIs</strong>
+                <p>Every public function, method, and class should have JSDoc comments. This includes Script Includes, UI Actions, and Business Rules that may be reused.</p>
+            </div>
+
+            <div class="info-box success">
+                <strong>✅ DO: Provide Examples</strong>
+                <p>Include practical examples showing how to use the code. This is especially important for complex APIs or ServiceNow-specific patterns.</p>
+            </div>
+
+            <div class="info-box success">
+                <strong>✅ DO: Specify Types Accurately</strong>
+                <p>Use precise types for parameters and return values. For ServiceNow objects, specify the class (e.g., GlideRecord, GlideElement).</p>
+            </div>
+
+            <div class="info-box warning">
+                <strong>⚠️ DON'T: Document Private Implementation Details</strong>
+                <p>Focus on the public API. Mark private methods with <span class="inline-code">@private</span> and keep their documentation minimal.</p>
+            </div>
+
+            <div class="info-box warning">
+                <strong>⚠️ DON'T: Write Outdated Documentation</strong>
+                <p>Keep JSDoc comments synchronized with code changes. Outdated documentation is worse than no documentation.</p>
+            </div>
+
+            <div class="info-box warning">
+                <strong>⚠️ DON'T: Over-Document Obvious Code</strong>
+                <p>If the code is self-explanatory, detailed comments may be unnecessary. Focus on the "why" rather than the "what".</p>
+            </div>
+
+            <h3>ServiceNow-Specific Recommendations</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Context</th>
+                        <th>What to Document</th>
+                        <th>Example Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Business Rules</strong></td>
+                        <td>Trigger conditions, table, timing, and business logic</td>
+                        <td>@description, @trigger, @table, @conditions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Script Includes</strong></td>
+                        <td>Class purpose, public methods, parameters, return values</td>
+                        <td>@class, @param, @returns, @example</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Client Scripts</strong></td>
+                        <td>Type, affected fields, form behavior</td>
+                        <td>@type, @field, @table, @description</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UI Actions</strong></td>
+                        <td>Action purpose, conditions, and side effects</td>
+                        <td>@description, @condition, @action</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scheduled Jobs</strong></td>
+                        <td>Schedule, purpose, dependencies, and notifications</td>
+                        <td>@description, @schedule, @depends</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Documentation Workflow</h3>
+
+            <ol>
+                <li><strong>Write documentation first:</strong> Consider using JSDoc as a design tool. Write the documentation before implementing the function.</li>
+                <li><strong>Review during code review:</strong> Ensure JSDoc comments are reviewed alongside code changes.</li>
+                <li><strong>Generate documentation:</strong> Use JSDoc tools to generate HTML documentation for your ServiceNow instance.</li>
+                <li><strong>Keep it updated:</strong> Update documentation as part of every code change.</li>
+                <li><strong>Educate your team:</strong> Establish JSDoc standards and train team members on best practices.</li>
+            </ol>
+
+            <h3>Complete Real-World Example</h3>
+
+            <div class="code-block" data-lang="javascript">
+                <pre><code class="language-javascript">/**
+ * ServiceNow Change Management Automation
+ * 
+ * @class ChangeAutomation
+ * @classdesc Automates change management workflows including risk assessment,
+ *            approval routing, and implementation scheduling
+ * 
+ * @description This Script Include provides comprehensive automation for the
+ *              change management process. It integrates with CMDB for impact
+ *              analysis, calculates risk scores, and orchestrates approval workflows.
+ * 
+ * @author ServiceNow Platform Team
+ * @since Paris Release
+ * @version 3.2.1
+ * 
+ * @requires ChangeRiskCalculator
+ * @requires NotificationEngine
+ * @requires CMDBAnalyzer
+ * 
+ * @example
+ * // Basic usage
+ * var automation = new ChangeAutomation();
+ * var risk = automation.assessRisk('CHG0010001');
+ * 
+ * @example
+ * // With custom configuration
+ * var automation = new ChangeAutomation({
+ *     riskThreshold: 0.7,
+ *     autoApprove: false,
+ *     notifyStakeholders: true
+ * });
+ * automation.processChange('CHG0010001');
+ */
+var ChangeAutomation = Class.create();
+ChangeAutomation.prototype = {
+    /**
+     * Initializes the Change Automation engine
+     * 
+     * @constructor
+     * @param {ChangeAutomationConfig} [config={}] - Configuration options
+     */
+    initialize: function(config) {
+        config = config || {};
+        
+        this.riskThreshold = config.riskThreshold || 0.5;
+        this.autoApprove = config.autoApprove !== undefined ? config.autoApprove : true;
+        this.notifyStakeholders = config.notifyStakeholders !== undefined ? config.notifyStakeholders : true;
+        
+        this.riskCalculator = new ChangeRiskCalculator();
+        this.notifier = new NotificationEngine();
+        this.cmdbAnalyzer = new CMDBAnalyzer();
+        
+        this.logger = new GSLog('ChangeAutomation', 'global');
+    },
+
+    /**
+     * Assesses the risk level of a change request
+     * 
+     * @param {string|GlideRecord} change - Change record or sys_id
+     * @returns {RiskAssessment} Detailed risk assessment
+     * 
+     * @throws {Error} If change record is not found
+     * @throws {Error} If change type is not supported
+     * 
+     * @example
+     * var assessment = automation.assessRisk('CHG0010001');
+     * if (assessment.score > 0.7) {
+     *     gs.info('High risk change detected');
+     * }
+     */
+    assessRisk: function(change) {
+        var changeRecord = this._getChangeRecord(change);
+        
+        if (!changeRecord) {
+            throw new Error('Change record not found');
+        }
+
+        // Calculate various risk factors
+        var impactScore = this._assessImpact(changeRecord);
+        var complexityScore = this._assessComplexity(changeRecord);
+        var historyScore = this._assessHistory(changeRecord);
+        var ciRiskScore = this._assessCIRisk(changeRecord);
+
+        // Weighted risk calculation
+        var overallScore = (
+            impactScore * 0.3 +
+            complexityScore * 0.25 +
+            historyScore * 0.25 +
+            ciRiskScore * 0.2
+        );
+
+        return {
+            score: overallScore,
+            level: this._getRiskLevel(overallScore),
+            factors: {
+                impact: impactScore,
+                complexity: complexityScore,
+                history: historyScore,
+                ciRisk: ciRiskScore
+            },
+            recommendations: this._getRecommendations(overallScore, changeRecord)
+        };
+    },
+
+    /**
+     * Processes a change request through the automation workflow
+     * 
+     * @param {string} changeSysId - Change request sys_id
+     * @param {ProcessOptions} [options={}] - Processing options
+     * @returns {ProcessResult} Result of the automation process
+     */
+    processChange: function(changeSysId, options) {
+        options = options || {};
+        
+        this.logger.info('Processing change: ' + changeSysId);
+        
+        try {
+            var assessment = this.assessRisk(changeSysId);
+            var changeRecord = this._getChangeRecord(changeSysId);
+            
+            // Update risk fields
+            changeRecord.risk_score = assessment.score;
+            changeRecord.risk_level = assessment.level;
+            changeRecord.update();
+            
+            // Route for approval based on risk
+            var approvalResult = this._routeApprovals(changeRecord, assessment);
+            
+            // Notify stakeholders if enabled
+            if (this.notifyStakeholders) {
+                this._notifyStakeholders(changeRecord, assessment);
+            }
+            
+            return {
+                success: true,
+                assessment: assessment,
+                approvalResult: approvalResult
+            };
+        } catch (e) {
+            this.logger.error('Error processing change: ' + e.message);
+            return {
+                success: false,
+                error: e.message
+            };
+        }
+    },
+
+    /**
+     * @private
+     * @param {GlideRecord} change
+     * @returns {number} Impact score between 0 and 1
+     */
+    _assessImpact: function(change) {
+        // Implementation details
+        return 0.5;
+    },
+
+    /**
+     * @private
+     */
+    _assessComplexity: function(change) {
+        return 0.5;
+    },
+
+    /**
+     * @private
+     */
+    _assessHistory: function(change) {
+        return 0.5;
+    },
+
+    /**
+     * @private
+     */
+    _assessCIRisk: function(change) {
+        return 0.5;
+    },
+
+    /**
+     * @private
+     */
+    _getRiskLevel: function(score) {
+        if (score >= 0.7) return 'High';
+        if (score >= 0.4) return 'Medium';
+        return 'Low';
+    },
+
+    /**
+     * @private
+     */
+    _getRecommendations: function(score, change) {
+        return [];
+    },
+
+    /**
+     * @private
+     */
+    _routeApprovals: function(change, assessment) {
+        return { routed: true };
+    },
+
+    /**
+     * @private
+     */
+    _notifyStakeholders: function(change, assessment) {
+        // Implementation
+    },
+
+    /**
+     * @private
+     * @param {string|GlideRecord} change
+     * @returns {GlideRecord|null}
+     */
+    _getChangeRecord: function(change) {
+        if (typeof change === 'string') {
+            var gr = new GlideRecord('change_request');
+            if (gr.get(change)) {
+                return gr;
+            }
+            return null;
+        }
+        return change;
+    },
+
+    type: 'ChangeAutomation'
+};
+
+/**
+ * @typedef {Object} ChangeAutomationConfig
+ * @property {number} [riskThreshold=0.5] - Risk threshold for auto-approval
+ * @property {boolean} [autoApprove=true] - Enable automatic approval for low-risk changes
+ * @property {boolean} [notifyStakeholders=true] - Send notifications to stakeholders
+ */
+
+/**
+ * @typedef {Object} RiskAssessment
+ * @property {number} score - Overall risk score (0-1)
+ * @property {string} level - Risk level: 'Low', 'Medium', or 'High'
+ * @property {RiskFactors} factors - Individual risk factor scores
+ * @property {Array<string>} recommendations - Risk mitigation recommendations
+ */
+
+/**
+ * @typedef {Object} RiskFactors
+ * @property {number} impact - Impact score (0-1)
+ * @property {number} complexity - Complexity score (0-1)
+ * @property {number} history - Historical risk score (0-1)
+ * @property {number} ciRisk - Configuration Item risk score (0-1)
+ */
+
+/**
+ * @typedef {Object} ProcessOptions
+ * @property {boolean} [skipRiskAssessment=false] - Skip risk assessment step
+ * @property {boolean} [forceApproval=false] - Force approval routing regardless of risk
+ * @property {Array<string>} [additionalApprovers=[]] - Additional approver sys_ids
+ */
+
+/**
+ * @typedef {Object} ProcessResult
+ * @property {boolean} success - Whether processing was successful
+ * @property {RiskAssessment} [assessment] - Risk assessment results
+ * @property {Object} [approvalResult] - Approval routing results
+ * @property {string} [error] - Error message if failed
+ */</code></pre>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Additional Resources</h2>
+            
+            <div class="info-box">
+                <strong>📚 Further Learning</strong>
+                <ul>
+                    <li><a href="https://jsdoc.app/" target="_blank" rel="noopener">Official JSDoc Documentation</a></li>
+                    <li><a href="https://developer.servicenow.com/" target="_blank" rel="noopener">ServiceNow Developer Portal</a></li>
+                    <li><a href="https://docs.servicenow.com/bundle/latest/page/script/server-scripting/concept/c_ServerSideScripting.html" target="_blank" rel="noopener">ServiceNow Scripting Guide</a></li>
+                </ul>
+            </div>
+
+            <h3>Tools and IDE Setup</h3>
+            <ul>
+                <li><strong>VS Code:</strong> Install "VS Code Extension for ServiceNow" for JSDoc support</li>
+                <li><strong>JSDoc Generator:</strong> Use tools like <code>jsdoc</code> or <code>documentation.js</code> to generate HTML docs</li>
+                <li><strong>Linting:</strong> Configure ESLint with JSDoc plugins to enforce documentation standards</li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Created with ❤️ for ServiceNow Developers | <a href="https://github.com/Dominik727/servicenow-Js-doc" target="_blank" rel="noopener">View on GitHub</a></p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">© 2024 ServiceNow JSDoc Guide | Last updated: January 2024</p>
+    </div>
+
+    <div class="scroll-top" id="scrollTop">↑</div>
+
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Add animation on scroll for sections
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
